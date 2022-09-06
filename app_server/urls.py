@@ -16,7 +16,7 @@ Including another URLconf
 from django.urls import include, path
 from rest_framework import routers
 from django.contrib import admin
-from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 from app_server.auth import views as auth_views
 
@@ -30,6 +30,10 @@ urlpatterns = [
     path('', include(router.urls)),
 
     # auto-generated endpoints
-    path('api-token-auth/', obtain_auth_token, name='api_token_auth'), # get token
-    path('admin/', admin.site.urls) # admin portal
+    path('admin/', admin.site.urls), # admin portal
+
+    # jwt views
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 ]
